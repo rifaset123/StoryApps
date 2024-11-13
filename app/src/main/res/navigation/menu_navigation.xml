@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_navigation"
+    app:startDestination="@id/introductionActivity">
+
+    <activity
+        android:id="@+id/introductionActivity"
+        android:name="com.example.storyapps.ui.introduction.IntroductionActivity"
+        android:label="activity_introduction"
+        tools:layout="@layout/activity_introduction" />
+    <activity
+        android:id="@+id/welcomeActivity2"
+        android:name="com.example.storyapps.ui.welcome.WelcomeActivity"
+        android:label="activity_welcome"
+        tools:layout="@layout/activity_welcome" />
+</navigation>
