@@ -3,19 +3,28 @@ package com.example.storyapps.ui.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.storyapps.R
+import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ActivityMainBinding
+import com.example.storyapps.helper.OnEventClickListener
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.welcome.WelcomeActivity
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+// https://www.dicoding.com/academies/352/tutorials/22889
+class MainActivity : AppCompatActivity(), OnEventClickListener {
 
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
@@ -35,6 +44,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val recyclerView: RecyclerView = binding.rvStories
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+
+        val adapter = MainAdapter(this)
+        recyclerView.adapter = adapter
+
+        viewModel.listStory.observe(this) { stories ->
+            adapter.submitList(stories)
+        }
+
         // logout ketika token dihapus
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
@@ -44,7 +64,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupAction()
+        loadTokens()
     }
+
+
 
     // biar kalo log out langsung keluar
     private fun setupView() {
@@ -64,5 +87,25 @@ class MainActivity : AppCompatActivity() {
         binding.actionLogout.setOnClickListener {
             viewModel.logout()
         }
+    }
+
+    private fun loadTokens() {
+        lifecycleScope.launch {
+            val token = viewModel.getToken()
+            if (token != null) {
+                viewModel.getStory(token)
+                Log.d(TAG, "Token is $token")
+            } else {
+                Log.d(TAG, "Token is null")
+            }
+        }
+    }
+
+    override fun onEventClick(event: ListStory) {
+        Toast.makeText(this, "Clicked: ${event.name}", Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "MainActivityqweqweq"
     }
 }

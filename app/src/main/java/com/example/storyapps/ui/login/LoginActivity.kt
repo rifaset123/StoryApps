@@ -15,12 +15,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.storyapps.R
 import com.example.storyapps.data.pref.UserModel
+import com.example.storyapps.data.pref.UserPreference
+import com.example.storyapps.data.pref.dataStore
 import com.example.storyapps.databinding.ActivityLoginBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.afterTextChanged
 import com.example.storyapps.ui.main.MainActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
@@ -141,6 +147,13 @@ class LoginActivity : AppCompatActivity() {
             binding.progressBar1.visibility = View.GONE
             if (user != null) {
                 AlertDialog.Builder(this).apply {
+                    lifecycleScope.launch {
+                        val userPreference = UserPreference.getInstance(dataStore)
+                        userPreference.saveToken(user.token)
+                        // check if user preference successfully save token
+                        val token = userPreference.getSession().map { it.token }.first()
+                        Log.d("LoginActivity", "setupObservers: $token")
+                    }
                     setTitle("Yeah!")
                     setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
                     setPositiveButton("Lanjut") { _, _ ->
@@ -151,6 +164,7 @@ class LoginActivity : AppCompatActivity() {
                         })
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
                         startActivity(intent)
                         finish()
                     }

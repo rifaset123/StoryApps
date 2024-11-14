@@ -3,6 +3,7 @@ package com.example.storyapps.helper
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.storyapps.data.repository.StoryRepository
 import com.example.storyapps.data.repository.UserRepository
 import com.example.storyapps.di.Injection
 import com.example.storyapps.ui.login.LoginViewModel
@@ -10,13 +11,16 @@ import com.example.storyapps.ui.main.MainViewModel
 import com.example.storyapps.ui.signup.RegisterViewModel
 import com.example.storyapps.ui.welcome.WelcomeViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(
+    private val repository: UserRepository,
+    private val provideRepositoryStory: StoryRepository
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
+                MainViewModel(repository, provideRepositoryStory) as T
             }
             modelClass.isAssignableFrom(WelcomeViewModel::class.java) -> {
                 WelcomeViewModel(repository) as T
@@ -38,7 +42,7 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
         fun getInstance(context: Context): ViewModelFactory {
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
-                    INSTANCE = ViewModelFactory(Injection.provideRepository(context))
+                    INSTANCE = ViewModelFactory(Injection.provideRepository(context), Injection.provideRepositoryStory(context))
                 }
             }
             return INSTANCE as ViewModelFactory

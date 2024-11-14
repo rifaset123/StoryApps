@@ -7,6 +7,7 @@ import com.example.storyapps.data.response.LoginResponse
 import com.example.storyapps.data.response.RegisterResponse
 import com.example.storyapps.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,
@@ -19,6 +20,10 @@ class UserRepository private constructor(
 
     fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
+    }
+
+    fun getToken(): Flow<String> {
+        return userPreference.getSession().map { it.token }
     }
 
     suspend fun logout() {
