@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -18,11 +19,13 @@ import com.example.storyapps.R
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.databinding.ActivityLoginBinding
 import com.example.storyapps.helper.ViewModelFactory
+import com.example.storyapps.helper.afterTextChanged
 import com.example.storyapps.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
+//        ViewModelFactory(Injection.provideRepository(this))
     }
 
     private lateinit var binding: ActivityLoginBinding
@@ -42,8 +45,12 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        setupObservers()
+
+        verificationLogin()
 
         playAnimation()
+        loading()
     }
 
     private fun playAnimation() {
@@ -85,18 +92,83 @@ class LoginActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
             val email = binding.edLoginEmail.text.toString()
-            viewModel.saveSession(UserModel(email, "sample_token"))
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                setPositiveButton("Lanjut") { _, _ ->
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
+            val password = binding.edLoginPassword.text.toString()
+            if (email.isNotEmpty() && password.isNotEmpty() &&
+                binding.edLoginEmail.error == null && binding.edLoginPassword.error == null) {
+                viewModel.login(email, password)
+            } else {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Error")
+                    setMessage("Please fill in all fields correctly.")
+                    setPositiveButton("OK", null)
+                    create()
+                    show()
                 }
-                create()
-                show()
+            }
+        }
+    }
+
+    private fun loading() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar1.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun verificationLogin(){
+        with(binding){
+            // format email
+            edLoginEmail.afterTextChanged { email ->
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    binding.edLoginEmail.error = "Invalid email address"
+                } else {
+                    binding.edLoginEmail.error = null
+                }
+            }
+
+            // minimal 8 karakter
+            edLoginPassword.afterTextChanged { password ->
+                if (password.length < 8) {
+                    binding.edLoginPassword.error = "Password must be at least 8 characters"
+                } else {
+                    binding.edLoginPassword.error = null
+                }
+            }
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.loggedInUser.observe(this) { user ->
+            binding.progressBar1.visibility = View.GONE
+            if (user != null) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Yeah!")
+                    setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                    setPositiveButton("Lanjut") { _, _ ->
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.putExtras(Bundle().apply {
+                            putString("extra_token", user.token)
+                            Log.d("LoginActivity", "setupAction: ${user.token}")
+                        })
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                    create()
+                    show()
+                }
+            }
+        }
+        viewModel.isLogin.observe(this) { isLogin ->
+            if (!isLogin) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Login Failed")
+                    setMessage("Please check your email and password and try again.")
+                    setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    create()
+                    show()
+                }
+                Log.e("LoginActivitywwww", "setupAction: Login failed")
             }
         }
     }

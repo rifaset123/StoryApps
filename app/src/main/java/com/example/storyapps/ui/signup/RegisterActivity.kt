@@ -3,6 +3,8 @@ package com.example.storyapps.ui.signup
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -21,19 +23,21 @@ import com.example.storyapps.ui.main.MainActivity
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
+    val registerViewModel by viewModels<RegisterViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val registerViewModel by viewModels<RegisterViewModel> {
-            ViewModelFactory.getInstance(this)
-        }
-
         setupView()
-        setupAction(registerViewModel)
+        setupAction()
+        setupObservers()
 
         verificationSignUp()
+        loading()
     }
 
     private fun setupView() {
@@ -49,8 +53,9 @@ class RegisterActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun setupAction(registerViewModel: RegisterViewModel) {
+    private fun setupAction() {
         binding.signupButton.setOnClickListener {
+            val name = binding.edRegisterName.text.toString()
             val email = binding.edRegisterEmail.text.toString()
             val password = binding.edRegisterPassword.text.toString()
 
@@ -58,19 +63,7 @@ class RegisterActivity : AppCompatActivity() {
                 binding.edRegisterEmail.error == null && binding.edRegisterPassword.error == null) {
 
                 // save session login
-                registerViewModel.saveSession(UserModel(email, "sample_token"))
-                AlertDialog.Builder(this).apply {
-                    setTitle("Yeah!")
-                    setMessage("Akun dengan $email sudah jadi nih. Yuk eksplor aplikasi ini.")
-                    setPositiveButton("Lanjut") { _, _ ->
-                        val intent = Intent(context, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                        finish()
-                    }
-                    create()
-                    show()
-                }
+                registerViewModel.register(name, email, password)
             } else {
                 AlertDialog.Builder(this).apply {
                     setTitle("Error")
@@ -79,6 +72,40 @@ class RegisterActivity : AppCompatActivity() {
                     create()
                     show()
                 }
+            }
+        }
+    }
+
+    private fun setupObservers() {
+        registerViewModel.registerStatus.observe(this) { user ->
+            val email = binding.edRegisterEmail.text.toString()
+            binding.progressBar2.visibility = View.GONE
+            if (user != null) {
+                registerViewModel.saveSession(UserModel(email, "sample_token"))
+                AlertDialog.Builder(this).apply {
+                    setTitle("Yeah!")
+                    setMessage("Akun berhasil dibuat. Yuk eksplor aplikasi ini.")
+                    setPositiveButton("Lanjut") { _, _ ->
+//                        val intent = Intent(context, MainActivity::class.java)
+//                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                        startActivity(intent)
+                        finish()
+                    }
+                    create()
+                    show()
+                }
+            }
+        }
+        registerViewModel.isRegister.observe(this) { isLogin ->
+            if (!isLogin) {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Login Failed")
+                    setMessage("Please check your email and password and try again.")
+                    setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    create()
+                    show()
+                }
+                Log.e("LoginActivitywwww", "setupAction: Login failed")
             }
         }
     }
@@ -102,6 +129,11 @@ class RegisterActivity : AppCompatActivity() {
                     binding.edRegisterPassword.error = null
                 }
             }
+        }
+    }
+    private fun loading() {
+        registerViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar2.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 }
