@@ -22,9 +22,9 @@ class UserRepository private constructor(
         return userPreference.getSession()
     }
 
-    fun getToken(): Flow<String> {
-        return userPreference.getSession().map { it.token }
-    }
+//    fun getToken(): Flow<String> {
+//        return userPreference.getSession().map { it.token }
+//    }
 
     suspend fun logout() {
         userPreference.logout()

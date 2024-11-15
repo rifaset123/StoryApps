@@ -20,6 +20,7 @@ import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ActivityMainBinding
 import com.example.storyapps.helper.OnEventClickListener
 import com.example.storyapps.helper.ViewModelFactory
+import com.example.storyapps.ui.detail.DetailActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 
@@ -102,7 +103,9 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
     }
 
     override fun onEventClick(event: ListStory) {
-        Toast.makeText(this, "Clicked: ${event.name}", Toast.LENGTH_SHORT).show()
+        val intentDetailPage = Intent(this, DetailActivity::class.java)
+        intentDetailPage.putExtra("STORY_ID", event.id)
+        startActivity(intentDetailPage)
     }
 
     companion object {
