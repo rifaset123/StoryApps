@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +19,7 @@ import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ActivityMainBinding
 import com.example.storyapps.helper.OnEventClickListener
 import com.example.storyapps.helper.ViewModelFactory
+import com.example.storyapps.ui.addStory.AddStoryActivity
 import com.example.storyapps.ui.detail.DetailActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
@@ -66,9 +66,9 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
 
         setupAction()
         loadTokens()
+
+        setupFab()
     }
-
-
 
     // biar kalo log out langsung keluar
     private fun setupView() {
@@ -106,6 +106,25 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         val intentDetailPage = Intent(this, DetailActivity::class.java)
         intentDetailPage.putExtra("STORY_ID", event.id)
         startActivity(intentDetailPage)
+    }
+
+    private fun setupFab() {
+        binding.fabAddStory.setOnClickListener {
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            val token = viewModel.getToken()
+            if (token != null) {
+                viewModel.getStory(token)
+            } else {
+                Log.d(TAG, "Token is null")
+            }
+        }
     }
 
     companion object {

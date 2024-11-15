@@ -53,7 +53,7 @@ class MainAdapter(private val listener: OnEventClickListener) : ListAdapter<List
         // untuk memeriksa apakah suatu data masih sama atau tidak
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStory>() {
             override fun areItemsTheSame(oldItem: ListStory, newItem: ListStory): Boolean {
-                return oldItem == newItem
+                return oldItem.id == newItem.id
             }
             override fun areContentsTheSame(oldItem: ListStory, newItem: ListStory): Boolean {
                 return oldItem == newItem

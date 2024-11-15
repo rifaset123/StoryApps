@@ -17,12 +17,6 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
-    @Multipart
-    @POST("stories/guest")
-    suspend fun uploadImage(
-        @Part file: MultipartBody.Part,
-        @Part("description") description: RequestBody,
-    ): FileUploadResponse
 
 //    @GET("events?active=1")
 //    fun getEvents(): Call<EventResponse>
@@ -52,4 +46,12 @@ interface ApiService {
     // get story by id
     @GET("stories/{id}")
     fun getStoryDetail(@Path("id") storyId: String): Call<StoryByIDResponse>
+
+    // add story
+    @Multipart
+    @POST("stories")
+    suspend fun uploadImage(
+        @Part file: MultipartBody.Part,
+        @Part ("description") description: RequestBody,
+    ) : FileUploadResponse
 }

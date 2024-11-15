@@ -7,6 +7,7 @@ import com.example.storyapps.data.repository.StoryIDRepository
 import com.example.storyapps.data.repository.StoryRepository
 import com.example.storyapps.data.repository.UserRepository
 import com.example.storyapps.di.Injection
+import com.example.storyapps.ui.addStory.AddStoryViewModel
 import com.example.storyapps.ui.detail.DetailViewModel
 import com.example.storyapps.ui.login.LoginViewModel
 import com.example.storyapps.ui.main.MainViewModel
@@ -24,6 +25,9 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(repository, provideRepositoryStory) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(repository, provideRepositoryStory) as T
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(provideRepositoryStoryID) as T
