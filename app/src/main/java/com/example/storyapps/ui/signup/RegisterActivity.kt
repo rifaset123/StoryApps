@@ -115,7 +115,7 @@ class RegisterActivity : AppCompatActivity() {
             // format email
             edRegisterEmail.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.edRegisterEmail.error = "Invalid email address"
+                    binding.edRegisterEmail.error = "Gunakan format email dengan benar"
                 } else {
                     binding.edRegisterEmail.error = null
                 }
@@ -124,7 +124,7 @@ class RegisterActivity : AppCompatActivity() {
             // minimal 8 karakter
             edRegisterPassword.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.edRegisterPassword.error = "Password must be at least 8 characters"
+                    binding.edRegisterPassword.error = "Password minimal 8 karakter"
                 } else {
                     binding.edRegisterPassword.error = null
                 }

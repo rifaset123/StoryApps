@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -52,6 +56,11 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         val adapter = MainAdapter(this)
         recyclerView.adapter = adapter
 
+        viewModel.isLoading.observe(this) { isLoading ->
+            // Show or hide loading indicator
+            binding.progressBarMain.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
         viewModel.listStory.observe(this) { stories ->
             adapter.submitList(stories)
         }
@@ -64,10 +73,26 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
             }
         }
 
-        setupAction()
         loadTokens()
 
         setupFab()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                // Handle logout action
+                setupAction()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     // biar kalo log out langsung keluar
@@ -85,9 +110,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
     }
 
     private fun setupAction() {
-        binding.actionLogout.setOnClickListener {
-            viewModel.logout()
-        }
+        viewModel.logout()
     }
 
     private fun loadTokens() {

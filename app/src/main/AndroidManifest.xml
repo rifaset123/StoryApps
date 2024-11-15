@@ -39,6 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
+            android:label=""
             android:exported="false" />
         <activity
             android:name=".ui.introduction.IntroductionActivity"

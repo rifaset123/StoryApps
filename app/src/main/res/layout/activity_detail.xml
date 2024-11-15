@@ -7,9 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.detail.DetailActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBarDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:paddingTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-185dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,32 +35,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ng" />
 
             <TextView
+                android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/titleTextView"
+                android:layout_margin="16dp"
                 android:text="Title"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="16dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <TextView
+                android:id="@+id/descriptionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/descriptionTextView"
+                android:layout_margin="16dp"
                 android:text="Deskripsi"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="16dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
             <Button
                 android:id="@+id/btn_back"

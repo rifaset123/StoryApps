@@ -1,6 +1,7 @@
 package com.example.storyapps.ui.detail
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        showLoading(true)
 
         val storyId = intent.getStringExtra("STORY_ID")
         if (storyId != null) {
@@ -29,7 +31,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         viewModel.storyDetail.observe(this) { story ->
-            // Update UI with story details
+            showLoading(false)
             with(binding){
                 titleTextView.text = story?.name
                 descriptionTextView.text = story?.description
@@ -43,5 +45,9 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBarDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
