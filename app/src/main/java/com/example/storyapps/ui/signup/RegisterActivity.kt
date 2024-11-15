@@ -61,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
 
             if (email.isNotEmpty() && password.isNotEmpty() &&
                 binding.edRegisterEmail.error == null && binding.edRegisterPassword.error == null) {
-
+                binding.signupButton.isEnabled = false
                 // save session login
                 registerViewModel.register(name, email, password)
             } else {
@@ -134,6 +134,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun loading() {
         registerViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar2.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.signupButton.isEnabled = !isLoading
         }
     }
 }

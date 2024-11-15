@@ -101,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.edLoginPassword.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty() &&
                 binding.edLoginEmail.error == null && binding.edLoginPassword.error == null) {
+                binding.loginButton.isEnabled = false
                 viewModel.login(email, password)
             } else {
                 AlertDialog.Builder(this).apply {
@@ -117,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
     private fun loading() {
         viewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar1.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.loginButton.isEnabled = !isLoading
         }
     }
 
@@ -156,6 +158,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     setTitle("Yeah!")
                     setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                    setCancelable(false)
                     setPositiveButton("Lanjut") { _, _ ->
                         val intent = Intent(context, MainActivity::class.java)
                         intent.putExtras(Bundle().apply {
