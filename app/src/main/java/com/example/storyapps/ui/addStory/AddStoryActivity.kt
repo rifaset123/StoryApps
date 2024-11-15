@@ -1,6 +1,7 @@
 package com.example.storyapps.ui.addStory
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,6 +26,7 @@ import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.getImageUri
 import com.example.storyapps.helper.reduceFileImage
 import com.example.storyapps.helper.uriToFile
+import com.example.storyapps.ui.main.MainActivity
 import com.example.storyapps.ui.main.MainViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -113,7 +115,9 @@ class AddStoryActivity : AppCompatActivity() {
                     val successResponse = apiService.uploadImage(multipartBody, requestBody)
                     showToast(successResponse.message)
                     showLoading(false)
-                    finish()
+                    intent = Intent(this@AddStoryActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@AddStoryActivity).toBundle())
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, FileUploadResponse::class.java)
@@ -168,6 +172,10 @@ class AddStoryActivity : AppCompatActivity() {
             Log.d("Image URI", "showImage: $it")
             binding.previewImageView.setImageURI(it)
         }
+    }
+
+    override fun onBackPressed() {
+        finishAffinity()
     }
 
     companion object {
