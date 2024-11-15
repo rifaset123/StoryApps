@@ -32,6 +32,7 @@
 
             <ImageView
                 android:id="@+id/imageView"
+                android:transitionName="profile"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
@@ -43,6 +44,7 @@
 
             <TextView
                 android:id="@+id/titleTextView"
+                android:transitionName="name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -54,6 +56,7 @@
 
             <TextView
                 android:id="@+id/descriptionTextView"
+                android:transitionName="description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -64,6 +67,7 @@
 
             <Button
                 android:id="@+id/btn_back"
+                android:transitionName="button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

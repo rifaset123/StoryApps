@@ -1,5 +1,6 @@
 package com.example.storyapps.ui.main
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -128,13 +131,14 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
     override fun onEventClick(event: ListStory) {
         val intentDetailPage = Intent(this, DetailActivity::class.java)
         intentDetailPage.putExtra("STORY_ID", event.id)
-        startActivity(intentDetailPage)
+        startActivity(intentDetailPage, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+
     }
 
     private fun setupFab() {
         binding.fabAddStory.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
-            startActivity(intent)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
 

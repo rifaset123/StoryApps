@@ -41,7 +41,7 @@ class DetailActivity : AppCompatActivity() {
                     .into(imageView)
 
                 btnBack.setOnClickListener {
-                    finish()
+                    finishAfterTransition()
                 }
             }
         }
