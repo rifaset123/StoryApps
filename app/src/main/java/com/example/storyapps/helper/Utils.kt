@@ -50,7 +50,6 @@ private fun getImageUriForPreQ(context: Context): Uri {
         "${context.packageName}.fileprovider",
         imageFile
     )
-    //content://com.dicoding.picodiploma.mycamera.fileprovider/my_images/MyCamera/20230825_133659.jpg
 }
 
 fun createCustomTempFile(context: Context): File {
@@ -65,7 +64,6 @@ fun uriToFile(imageUri: Uri, context: Context): File {
     // untuk membaca data dari Uri gambar.
     val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
     val outputStream = FileOutputStream(myFile)
-    // tempat penyimpanan sementara yang digunakan untuk membaca dan menulis data dalam potongan-potongan kecil
     val buffer = ByteArray(1024)
 
     var length: Int

@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -17,15 +16,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.storyapps.R
-import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.data.pref.UserPreference
 import com.example.storyapps.data.pref.dataStore
 import com.example.storyapps.databinding.ActivityLoginBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.afterTextChanged
 import com.example.storyapps.ui.main.MainActivity
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -69,15 +65,17 @@ class LoginActivity : AppCompatActivity() {
 
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(200)
         val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(200)
+        val emailBox = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(200)
         val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(200)
         val emailEdit = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(200)
+        val passwordBox = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(200)
         val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(200)
         val passwordEdit = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(200)
         val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(200)
 
         // animasinya muncul secara bergantian
         AnimatorSet().apply {
-            playSequentially(title, message, emailText, emailEdit, passwordText, passwordEdit, login)
+            playSequentially(title, message, emailText, emailEdit, emailBox,  passwordText, passwordEdit, passwordBox, login)
             start()
         }
     }
@@ -106,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 AlertDialog.Builder(this).apply {
                     setTitle("Error")
-                    setMessage("Please fill in all fields correctly.")
+                    setMessage(getString(R.string.please_fill_in_all_fields_correctly))
                     setPositiveButton("OK", null)
                     create()
                     show()
@@ -127,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
             // format email
             edLoginEmail.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.edLoginEmail.error = "Gunakan format email dengan benar"
+                    binding.edLoginEmail.error = getString(R.string.use_correct_email_format)
                 } else {
                     binding.edLoginEmail.error = null
                 }
@@ -136,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
             // minimal 8 karakter
             edLoginPassword.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.edLoginPassword.error = "Password minimal 8 karakter"
+                    binding.edLoginPassword.error = getString(R.string.password_must_be_at_least_8_characters)
                 } else {
                     binding.edLoginPassword.error = null
                 }
@@ -152,18 +150,14 @@ class LoginActivity : AppCompatActivity() {
                     lifecycleScope.launch {
                         val userPreference = UserPreference.getInstance(dataStore)
                         userPreference.saveToken(user.token)
-                        // check if user preference successfully save token
-                        val token = userPreference.getSession().map { it.token }.first()
-                        Log.d("LoginActivity", "setupObservers: $token")
                     }
-                    setTitle("Yeah!")
-                    setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
+                    setTitle("Yeay")
+                    setMessage(getString(R.string.you_have_successfully_logged_in_enjoy_all_the_features))
                     setCancelable(false)
-                    setPositiveButton("Lanjut") { _, _ ->
+                    setPositiveButton(getString(R.string.continue_register)) { _, _ ->
                         val intent = Intent(context, MainActivity::class.java)
                         intent.putExtras(Bundle().apply {
                             putString("extra_token", user.token)
-                            Log.d("LoginActivity", "setupAction: ${user.token}")
                         })
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -179,13 +173,12 @@ class LoginActivity : AppCompatActivity() {
         viewModel.isLogin.observe(this) { isLogin ->
             if (!isLogin) {
                 AlertDialog.Builder(this).apply {
-                    setTitle("Login Failed")
-                    setMessage("Please check your email and password and try again.")
+                    setTitle(getString(R.string.login_failed))
+                    setMessage(getString(R.string.account_not_found_please_make_sure_your_email_and_password_are_correct))
                     setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                     create()
                     show()
                 }
-                Log.e("LoginActivitywwww", "setupAction: Login failed")
             }
         }
     }

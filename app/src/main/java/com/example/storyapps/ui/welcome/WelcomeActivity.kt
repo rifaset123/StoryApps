@@ -2,6 +2,7 @@ package com.example.storyapps.ui.welcome
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +19,6 @@ import com.example.storyapps.R
 import com.example.storyapps.databinding.ActivityWelcomeBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.login.LoginActivity
-import com.example.storyapps.ui.login.LoginViewModel
 import com.example.storyapps.ui.main.MainActivity
 import com.example.storyapps.ui.signup.RegisterActivity
 
@@ -101,11 +101,13 @@ class WelcomeActivity : AppCompatActivity() {
     private fun setupAction() {
         with(binding){
             loginButton.setOnClickListener {
-                startActivity(Intent(this@WelcomeActivity, LoginActivity::class.java))
+                val intentToLogin = Intent(this@WelcomeActivity, LoginActivity::class.java)
+                startActivity(intentToLogin, ActivityOptions.makeSceneTransitionAnimation(this@WelcomeActivity).toBundle())
             }
 
             signupButton.setOnClickListener {
-                startActivity(Intent(this@WelcomeActivity, RegisterActivity::class.java))
+                val intentToRegister = Intent(this@WelcomeActivity, RegisterActivity::class.java)
+                startActivity(intentToRegister, ActivityOptions.makeSceneTransitionAnimation(this@WelcomeActivity).toBundle())
             }
         }
     }

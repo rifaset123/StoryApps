@@ -2,15 +2,12 @@ package com.example.storyapps.ui.main
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -98,20 +95,6 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         }
     }
 
-    // biar fullscreren tanpa action bar
-//    private fun setupView() {
-//        @Suppress("DEPRECATION")
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            window.insetsController?.hide(WindowInsets.Type.statusBars())
-//        } else {
-//            window.setFlags(
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN
-//            )
-//        }
-//        supportActionBar?.hide()
-//    }
-
     private fun setupAction() {
         viewModel.logout()
     }
@@ -121,9 +104,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
             val token = viewModel.getToken()
             if (token != null) {
                 viewModel.getStory(token)
-                Log.d(TAG, "Token is $token")
             } else {
-                Log.d(TAG, "Token is null")
             }
         }
     }
@@ -148,13 +129,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
             val token = viewModel.getToken()
             if (token != null) {
                 viewModel.getStory(token)
-            } else {
-                Log.d(TAG, "Token is null")
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "MainActivityqweqweq"
     }
 }

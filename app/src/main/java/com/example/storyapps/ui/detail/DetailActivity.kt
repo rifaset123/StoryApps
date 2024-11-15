@@ -2,16 +2,12 @@ package com.example.storyapps.ui.detail
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.storyapps.R
 import com.example.storyapps.databinding.ActivityDetailBinding
 import com.example.storyapps.helper.ViewModelFactory
-import com.example.storyapps.ui.main.MainViewModel
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding

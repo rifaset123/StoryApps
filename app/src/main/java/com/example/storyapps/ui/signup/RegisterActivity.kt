@@ -1,9 +1,9 @@
 package com.example.storyapps.ui.signup
 
-import android.content.Intent
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -11,14 +11,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.storyapps.R
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.databinding.ActivityRegisterBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.afterTextChanged
-import com.example.storyapps.ui.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -31,6 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         setupView()
         setupAction()
@@ -38,6 +36,38 @@ class RegisterActivity : AppCompatActivity() {
 
         verificationSignUp()
         loading()
+
+        playAnimation()
+    }
+
+    private fun playAnimation() {
+        // gambar yang berjalan ke kanan dan ke kiri secara berulang
+        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val image = ObjectAnimator.ofFloat(binding.imageView, View.ALPHA, 1f).setDuration(200)
+        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(200)
+        val nameText = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(200)
+        val nameTextLayout = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(200)
+        val nameEdit = ObjectAnimator.ofFloat(binding.edRegisterName, View.ALPHA, 1f).setDuration(200)
+        val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(200)
+        val emailTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(200)
+        val emailEdit = ObjectAnimator.ofFloat(binding.edRegisterEmail, View.ALPHA, 1f).setDuration(200)
+        val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(200)
+        val passwordTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(200)
+        val passwordTextEdit = ObjectAnimator.ofFloat(binding.edRegisterPassword, View.ALPHA, 1f).setDuration(200)
+        val button = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(200)
+
+        // animasinya muncul secara bergantian
+        AnimatorSet().apply {
+            playSequentially(image, title, AnimatorSet().apply {
+                playTogether(nameText, nameTextLayout, nameEdit, emailText, emailTextLayout, emailEdit, passwordText, passwordTextLayout, passwordTextEdit)
+            }, button)
+            start()
+        }
     }
 
     private fun setupView() {
@@ -83,12 +113,9 @@ class RegisterActivity : AppCompatActivity() {
             if (user != null) {
                 registerViewModel.saveSession(UserModel(email, "sample_token"))
                 AlertDialog.Builder(this).apply {
-                    setTitle("Yeah!")
-                    setMessage("Akun berhasil dibuat. Yuk eksplor aplikasi ini.")
-                    setPositiveButton("Lanjut") { _, _ ->
-//                        val intent = Intent(context, MainActivity::class.java)
-//                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                        startActivity(intent)
+                    setTitle("Yeay!")
+                    setMessage(getString(R.string.account_has_been_created_successfully))
+                    setPositiveButton(getString(R.string.continue_register)) { _, _ ->
                         finish()
                     }
                     create()
@@ -99,13 +126,12 @@ class RegisterActivity : AppCompatActivity() {
         registerViewModel.isRegister.observe(this) { isLogin ->
             if (!isLogin) {
                 AlertDialog.Builder(this).apply {
-                    setTitle("Login Failed")
-                    setMessage("Please check your email and password and try again.")
+                    setTitle(getString(R.string.register_failed))
+                    setMessage(getString(R.string.email_has_already_taken))
                     setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                     create()
                     show()
                 }
-                Log.e("LoginActivitywwww", "setupAction: Login failed")
             }
         }
     }
@@ -115,7 +141,7 @@ class RegisterActivity : AppCompatActivity() {
             // format email
             edRegisterEmail.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.edRegisterEmail.error = "Gunakan format email dengan benar"
+                    binding.edRegisterEmail.error = getString(R.string.use_correct_email_format)
                 } else {
                     binding.edRegisterEmail.error = null
                 }
@@ -124,7 +150,8 @@ class RegisterActivity : AppCompatActivity() {
             // minimal 8 karakter
             edRegisterPassword.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.edRegisterPassword.error = "Password minimal 8 karakter"
+                    binding.edRegisterPassword.error =
+                        getString(R.string.password_must_be_at_least_8_characters)
                 } else {
                     binding.edRegisterPassword.error = null
                 }

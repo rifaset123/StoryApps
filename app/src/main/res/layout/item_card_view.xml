@@ -18,7 +18,7 @@
             android:contentDescription="image_placeholder"
             android:scaleType="centerCrop"/>
         <TextView
-            android:id="@+id/item_title"
+            android:id="@+id/tv_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nama"

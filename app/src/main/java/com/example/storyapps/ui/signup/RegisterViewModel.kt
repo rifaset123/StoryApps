@@ -1,7 +1,5 @@
 package com.example.storyapps.ui.signup
 
-import android.text.Editable
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -43,14 +41,11 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
                 if (result.error == false){
                     _isRegister.value = true
                     _registerStatus.postValue(result)
-                    Log.d("RegisterViewModel", "register: $result, with : $name, $email, $password")
                     _isLoading.value = false
                 } else {
-                    Log.e("RegisterViewModel", "register: ${result.message}")
                     _isLoading.value = false
                 }
             } catch (e: Exception) {
-                Log.e("RegisterViewModel", "register: ${e.message}")
                 _isRegister.value = false
             } finally {
                 _isLoading.value = false

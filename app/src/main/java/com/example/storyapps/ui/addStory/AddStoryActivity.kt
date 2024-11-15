@@ -27,7 +27,6 @@ import com.example.storyapps.helper.getImageUri
 import com.example.storyapps.helper.reduceFileImage
 import com.example.storyapps.helper.uriToFile
 import com.example.storyapps.ui.main.MainActivity
-import com.example.storyapps.ui.main.MainViewModel
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -148,7 +147,7 @@ class AddStoryActivity : AppCompatActivity() {
             currentImageUri = uri
             showImage()
         } else {
-            Log.d("Photo Picker", "No media selected")
+            currentImageUri = null
         }
     }
 
@@ -169,7 +168,6 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun showImage() {
         currentImageUri?.let {
-            Log.d("Image URI", "showImage: $it")
             binding.previewImageView.setImageURI(it)
         }
     }

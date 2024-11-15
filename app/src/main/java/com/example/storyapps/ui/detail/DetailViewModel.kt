@@ -6,11 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storyapps.data.repository.StoryIDRepository
-import com.example.storyapps.data.repository.StoryRepository
-import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.data.response.Story
 import com.example.storyapps.data.response.StoryByIDResponse
-import com.example.storyapps.data.response.StoryResponse
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback

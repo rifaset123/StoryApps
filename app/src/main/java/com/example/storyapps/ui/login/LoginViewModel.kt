@@ -1,8 +1,5 @@
 package com.example.storyapps.ui.login
 
-import android.app.AlertDialog
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,22 +39,17 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                         val user = loginResult.token?.let { UserModel(email, it, true) }
                         _loggedInUser.postValue(user)
                         extraToken = user?.token
-                        Log.d("LoginViewModel", "login: $user")
-                        Log.d("LoginViewModel", "login: ${user?.token}")
                         if (user != null) {
                             saveSession(user)
                         }
                     }
                 } else {
                     // Handle bad request
-                    Log.e("LoginViewModel1", "Login failed: ${result.message}")
                     _isLogin.value = false
                 }
             } catch (e: Exception) {
                 // Handle exception
-                Log.e("LoginViewModel1", "Login failed with exception: ${e.message}")
                 _isLogin.value = false
-                Log.e("LoginViewModel1", "Login failed: $isLogin")
             } finally {
                 _isLoading.value = false
             }

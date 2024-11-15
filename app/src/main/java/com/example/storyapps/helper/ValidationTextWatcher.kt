@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 
+// sebagai helper aja biar bisa ngecek texchanged
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -35,4 +35,15 @@
     <string name="description_detail">Deskripsi</string>
     <string name="back_detail">Kembali</string>
     <string name="main_header">Dicoding Stories</string>
+
+    <string name="register_failed">Registrasi Gagal</string>
+    <string name="email_has_already_taken">Email telah dipakai</string>
+    <string name="use_correct_email_format">Masukkan formmat email yang benar</string>
+    <string name="password_must_be_at_least_8_characters">Password minimal 8 karakter</string>
+    <string name="account_has_been_created_successfully">Akun telah berhasil dibuat.</string>
+    <string name="continue_register">Lanjut</string>
+    <string name="please_fill_in_all_fields_correctly">Mohon isi seluruh data dengan benar</string>
+    <string name="you_have_successfully_logged_in_enjoy_all_the_features">Kamu berhasil login, nikmati seluruh fitur.</string>
+    <string name="login_failed">Login gagal!</string>
+    <string name="account_not_found_please_make_sure_your_email_and_password_are_correct">Akun tidak ditemukan, mohon pastikan email dan password benar</string>
 </resources>

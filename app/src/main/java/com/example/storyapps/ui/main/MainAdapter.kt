@@ -6,12 +6,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.storyapps.R
 import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ItemCardViewBinding
 import com.example.storyapps.helper.OnEventClickListener
@@ -38,7 +36,7 @@ class MainAdapter(private val listener: OnEventClickListener) : ListAdapter<List
     ) {
         fun bind(stories: ListStory) {
             with(binding){
-                itemTitle.text = stories.name
+                tvItemName.text = stories.name
                 itemDescription.text = stories.description
             }
             Glide.with(itemView.context)

@@ -34,4 +34,15 @@
     <string name="description_detail">Description</string>
     <string name="back_detail">Back</string>
     <string name="main_header">Dicoding Stories</string>
+
+    <string name="register_failed">Register Failed</string>
+    <string name="email_has_already_taken">Email has already taken</string>
+    <string name="use_correct_email_format">Use correct email format</string>
+    <string name="password_must_be_at_least_8_characters">Password must be at least 8 characters</string>
+    <string name="account_has_been_created_successfully">Account has been created successfully.</string>
+    <string name="continue_register">Continue</string>
+    <string name="please_fill_in_all_fields_correctly">Please fill in all fields correctly.</string>
+    <string name="you_have_successfully_logged_in_enjoy_all_the_features">You have successfully logged in. Enjoy all the features.</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="account_not_found_please_make_sure_your_email_and_password_are_correct">Account not found, Please make sure your email and password are correct</string>
 </resources>

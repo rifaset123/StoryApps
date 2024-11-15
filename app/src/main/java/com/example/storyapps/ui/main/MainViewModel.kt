@@ -1,6 +1,5 @@
 package com.example.storyapps.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,19 +37,11 @@ class MainViewModel(private val repository: UserRepository, private val story : 
 
     suspend fun getStory(token: String) {
         _isLoading.value = true
-        Log.d("MainViewModelqqweqeqwe", "getStory: $token")
         try {
             val response = ApiConfig.getApiService(token).getStories()
-            Log.d("MainViewModelqqweqeqwe", "getStory: $response")
             _listStory.value = response.listStory?.filterNotNull()
         } catch (e: Exception) {
             _listStory.value = null
-            Log.d("MainViewModelqqweqeqwe", "gagal")
-            if (e is retrofit2.HttpException) {
-                Log.e("MainViewModelqqweqeqwe", "HTTP error: ${e.code()} ${e.message()}", e)
-            } else {
-                Log.e("MainViewModelqqweqeqwe", "Error fetching stories", e)
-            }
         } finally {
             _isLoading.value = false
         }
