@@ -5,6 +5,7 @@
 
     <color name="pink">#F06292</color>
     <color name="navy">#2D3D4F</color>
+    <color name="navy_disable">#452D3D4F</color>
 
 
 </resources>

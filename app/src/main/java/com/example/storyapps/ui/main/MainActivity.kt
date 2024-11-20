@@ -25,6 +25,7 @@ import com.example.storyapps.ui.addStory.AddStoryActivity
 import com.example.storyapps.ui.detail.DetailActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 // https://www.dicoding.com/academies/352/tutorials/22889
 class MainActivity : AppCompatActivity(), OnEventClickListener {
@@ -111,9 +112,8 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
 
     override fun onEventClick(event: ListStory) {
         val intentDetailPage = Intent(this, DetailActivity::class.java)
-        intentDetailPage.putExtra("STORY_ID", event.id)
+        intentDetailPage.putExtra("STORY_OBJECT", event as Serializable)
         startActivity(intentDetailPage, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-
     }
 
     private fun setupFab() {

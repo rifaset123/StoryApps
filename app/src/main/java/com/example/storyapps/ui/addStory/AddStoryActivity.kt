@@ -172,10 +172,6 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        finishAffinity()
-    }
-
     companion object {
         private const val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }

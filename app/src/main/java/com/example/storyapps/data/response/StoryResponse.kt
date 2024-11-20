@@ -1,6 +1,7 @@
 package com.example.storyapps.data.response
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class StoryResponse(
 
@@ -36,4 +37,4 @@ data class ListStory(
 
 	@field:SerializedName("lat")
 	val lat: Any? = null
-)
+): Serializable

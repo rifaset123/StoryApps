@@ -46,4 +46,9 @@
     <string name="you_have_successfully_logged_in_enjoy_all_the_features">Kamu berhasil login, nikmati seluruh fitur.</string>
     <string name="login_failed">Login gagal!</string>
     <string name="account_not_found_please_make_sure_your_email_and_password_are_correct">Akun tidak ditemukan, mohon pastikan email dan password benar</string>
+
+    <string name="fill_the_form_first">Isi dulu form diatas</string>
+    <string name="example_gmail_com">contohemail@gmail.com</string>
+    <string name="enter_your_name">Masukin namamu</string>
+    <string name="enter_your_password">Masukin password</string>
 </resources>

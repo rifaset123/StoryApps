@@ -2,6 +2,8 @@ package com.example.storyapps.ui.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -16,6 +18,12 @@ import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.databinding.ActivityRegisterBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.afterTextChanged
+import com.example.storyapps.ui.customView.ButtonEdit
+import com.example.storyapps.ui.customView.EmailEditText
+import com.example.storyapps.ui.customView.NameEditText
+import com.example.storyapps.ui.customView.PasswordEditText
+import com.example.storyapps.ui.login.LoginActivity
+import com.example.storyapps.ui.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -29,6 +37,7 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
+        binding.signupButton.isEnabled = false
 
         setupView()
         setupAction()
@@ -52,19 +61,16 @@ class RegisterActivity : AppCompatActivity() {
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(200)
         val nameText = ObjectAnimator.ofFloat(binding.nameTextView, View.ALPHA, 1f).setDuration(200)
         val nameTextLayout = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(200)
-        val nameEdit = ObjectAnimator.ofFloat(binding.edRegisterName, View.ALPHA, 1f).setDuration(200)
         val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(200)
         val emailTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(200)
-        val emailEdit = ObjectAnimator.ofFloat(binding.edRegisterEmail, View.ALPHA, 1f).setDuration(200)
         val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(200)
         val passwordTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(200)
-        val passwordTextEdit = ObjectAnimator.ofFloat(binding.edRegisterPassword, View.ALPHA, 1f).setDuration(200)
         val button = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(200)
 
         // animasinya muncul secara bergantian
         AnimatorSet().apply {
             playSequentially(image, title, AnimatorSet().apply {
-                playTogether(nameText, nameTextLayout, nameEdit, emailText, emailTextLayout, emailEdit, passwordText, passwordTextLayout, passwordTextEdit)
+                playTogether(nameText, nameTextLayout, emailText, emailTextLayout, passwordText, passwordTextLayout)
             }, button)
             start()
         }
@@ -85,16 +91,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
-            val name = binding.edRegisterName.text.toString()
-            val email = binding.edRegisterEmail.text.toString()
-            val password = binding.edRegisterPassword.text.toString()
+            val name = binding.nameEditTextLayout.text.toString()
+            val email = binding.emailEditTextLayout.text.toString()
+            val password = binding.passwordEditTextLayout.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty() &&
-                binding.edRegisterEmail.error == null && binding.edRegisterPassword.error == null) {
+                binding.emailEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
                 binding.signupButton.isEnabled = false
                 // save session login
                 registerViewModel.register(name, email, password)
             } else {
+                binding.signupButton.isEnabled = false
                 AlertDialog.Builder(this).apply {
                     setTitle("Error")
                     setMessage("Please fill in all fields correctly.")
@@ -102,21 +109,20 @@ class RegisterActivity : AppCompatActivity() {
                     create()
                     show()
                 }
+                binding.signupButton.isEnabled = true
             }
         }
     }
 
     private fun setupObservers() {
         registerViewModel.registerStatus.observe(this) { user ->
-            val email = binding.edRegisterEmail.text.toString()
             binding.progressBar2.visibility = View.GONE
             if (user != null) {
-                registerViewModel.saveSession(UserModel(email, "sample_token"))
                 AlertDialog.Builder(this).apply {
                     setTitle("Yeay!")
                     setMessage(getString(R.string.account_has_been_created_successfully))
                     setPositiveButton(getString(R.string.continue_register)) { _, _ ->
-                        finish()
+                        finishAfterTransition()
                     }
                     create()
                     show()
@@ -139,25 +145,34 @@ class RegisterActivity : AppCompatActivity() {
     private fun verificationSignUp(){
         with(binding){
             // format email
-            edRegisterEmail.afterTextChanged { email ->
+            emailEditTextLayout.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.edRegisterEmail.error = getString(R.string.use_correct_email_format)
+                    binding.emailEditTextLayout.error = getString(R.string.use_correct_email_format)
                 } else {
-                    binding.edRegisterEmail.error = null
+                    binding.emailEditTextLayout.error = null
                 }
+                enableSignUpButton()
             }
 
             // minimal 8 karakter
-            edRegisterPassword.afterTextChanged { password ->
+            passwordEditTextLayout.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.edRegisterPassword.error =
-                        getString(R.string.password_must_be_at_least_8_characters)
+                    binding.passwordEditTextLayout.error = getString(R.string.password_must_be_at_least_8_characters)
                 } else {
-                    binding.edRegisterPassword.error = null
+                    binding.passwordEditTextLayout.error = null
                 }
+                enableSignUpButton()
             }
         }
     }
+
+    private fun enableSignUpButton() {
+        binding.signupButton.isEnabled = binding.emailEditTextLayout.error == null &&
+                binding.passwordEditTextLayout.error == null &&
+                binding.emailEditTextLayout.text?.isNotEmpty() == true &&
+                binding.passwordEditTextLayout.text?.isNotEmpty() == true
+    }
+
     private fun loading() {
         registerViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar2.visibility = if (isLoading) View.VISIBLE else View.GONE

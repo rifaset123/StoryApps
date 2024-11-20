@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.loginButton.isEnabled = false
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -67,15 +68,13 @@ class LoginActivity : AppCompatActivity() {
         val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(200)
         val emailBox = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(200)
         val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(200)
-        val emailEdit = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(200)
         val passwordBox = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(200)
         val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(200)
-        val passwordEdit = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(200)
-        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(200)
+        val button = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(200)
 
         // animasinya muncul secara bergantian
         AnimatorSet().apply {
-            playSequentially(title, message, emailText, emailEdit, emailBox,  passwordText, passwordEdit, passwordBox, login)
+            playSequentially(title, message, emailText, emailBox,  passwordText,  passwordBox, button)
             start()
         }
     }
@@ -95,10 +94,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
+            val email = binding.emailEditTextLayout.text.toString()
+            val password = binding.passwordEditTextLayout.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty() &&
-                binding.edLoginEmail.error == null && binding.edLoginPassword.error == null) {
+                binding.passwordEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
                 binding.loginButton.isEnabled = false
                 viewModel.login(email, password)
             } else {
@@ -123,23 +122,32 @@ class LoginActivity : AppCompatActivity() {
     private fun verificationLogin(){
         with(binding){
             // format email
-            edLoginEmail.afterTextChanged { email ->
+            emailEditTextLayout.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.edLoginEmail.error = getString(R.string.use_correct_email_format)
+                    binding.emailEditTextLayout.error = getString(R.string.use_correct_email_format)
                 } else {
-                    binding.edLoginEmail.error = null
+                    binding.emailEditTextLayout.error = null
                 }
+                enableSignUpButton()
             }
 
             // minimal 8 karakter
-            edLoginPassword.afterTextChanged { password ->
+            passwordEditTextLayout.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.edLoginPassword.error = getString(R.string.password_must_be_at_least_8_characters)
+                    binding.passwordEditTextLayout.error = getString(R.string.password_must_be_at_least_8_characters)
                 } else {
-                    binding.edLoginPassword.error = null
+                    binding.passwordEditTextLayout.error = null
                 }
+                enableSignUpButton()
             }
         }
+    }
+
+    private fun enableSignUpButton() {
+        binding.loginButton.isEnabled = binding.emailEditTextLayout.error == null &&
+                binding.passwordEditTextLayout.error == null &&
+                binding.emailEditTextLayout.text?.isNotEmpty() == true &&
+                binding.passwordEditTextLayout.text?.isNotEmpty() == true
     }
 
     private fun setupObservers() {

@@ -45,4 +45,9 @@
     <string name="you_have_successfully_logged_in_enjoy_all_the_features">You have successfully logged in. Enjoy all the features.</string>
     <string name="login_failed">Login Failed</string>
     <string name="account_not_found_please_make_sure_your_email_and_password_are_correct">Account not found, Please make sure your email and password are correct</string>
+
+    <string name="fill_the_form_first">Fill the form first</string>
+    <string name="example_gmail_com">example@gmail.com</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_password">Enter your Password</string>
 </resources>

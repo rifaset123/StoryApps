@@ -34,19 +34,17 @@ class DetailViewModel(private val repository: StoryIDRepository) : ViewModel() {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             _storyDetail.value = it.story
-                            Log.d("DetailViewModel", "onResponse: ${response.body()}")
-//                            Log.d("DetailViewModel", "onResponse: Success - ${it.listStory?.firstOrNull()}")
                         } ?: run {
-                            Log.e("DetailViewModel", "onResponse: Failure - Response body is null")
                         }
                     } else {
-                        Log.e("DetailViewModel", "onResponse: Failure - ${response.code()} - ${response.message()}")
+                        response.errorBody()?.let {
+//                            Log.e("DetailViewModel", it.string())
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<StoryByIDResponse>, t: Throwable) {
                     _isLoading.value = false
-                    Log.e("DetailViewModel", "onFailure: ${t.message}", t)
                 }
             })
         }

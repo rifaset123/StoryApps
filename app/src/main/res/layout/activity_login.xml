@@ -81,10 +81,9 @@
         android:alpha="0"
         tools:alpha="100" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.example.storyapps.ui.customView.EmailEditText
         android:id="@+id/emailEditTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
@@ -93,18 +92,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTextView"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
         android:alpha="0"
-        tools:alpha="100" >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_login_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:alpha="0"
-            tools:alpha="100" />
-    </com.google.android.material.textfield.TextInputLayout>
+        tools:alpha="100" />
 
     <TextView
         android:id="@+id/passwordTextView"
@@ -121,41 +109,26 @@
         android:alpha="0"
         tools:alpha="100" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.example.storyapps.ui.customView.PasswordEditText
         android:id="@+id/passwordEditTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTextView"
         app:startIconDrawable="@drawable/ic_baseline_lock_24"
         android:alpha="0"
-        tools:alpha="100" >
+        tools:alpha="100" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_login_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:alpha="0"
-            tools:alpha="100" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
+    <com.example.storyapps.ui.customView.ButtonEdit
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/loginButton"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/navy"
-        android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
