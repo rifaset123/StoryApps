@@ -51,10 +51,4 @@
     <string name="example_gmail_com">contohemail@gmail.com</string>
     <string name="enter_your_name">Masukin namamu</string>
     <string name="enter_your_password">Masukin password</string>
-
-    <string name="title_activity_maps">Peta</string>
-    <string name="normal_type">Biasa</string>
-    <string name="satellite_type">Satelit</string>
-    <string name="terrain_type">Medan</string>
-    <string name="hybrid_type">Gabungan</string>
 </resources>

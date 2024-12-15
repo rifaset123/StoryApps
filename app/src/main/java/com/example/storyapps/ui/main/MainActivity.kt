@@ -23,7 +23,6 @@ import com.example.storyapps.helper.OnEventClickListener
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.addStory.AddStoryActivity
 import com.example.storyapps.ui.detail.DetailActivity
-import com.example.storyapps.ui.maps.MapsActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -88,11 +87,6 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_maps -> {
-                // Handle maps action
-                startActivity(Intent(this, MapsActivity::class.java))
-                true
-            }
             R.id.action_logout -> {
                 // Handle logout action
                 setupAction()

@@ -11,7 +11,6 @@ import com.example.storyapps.ui.addStory.AddStoryViewModel
 import com.example.storyapps.ui.detail.DetailViewModel
 import com.example.storyapps.ui.login.LoginViewModel
 import com.example.storyapps.ui.main.MainViewModel
-import com.example.storyapps.ui.maps.MapsViewModel
 import com.example.storyapps.ui.signup.RegisterViewModel
 import com.example.storyapps.ui.welcome.WelcomeViewModel
 
@@ -26,9 +25,6 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(repository, provideRepositoryStory) as T
-            }
-            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
-                MapsViewModel(repository, provideRepositoryStory) as T
             }
             modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
                 AddStoryViewModel(repository, provideRepositoryStory) as T
