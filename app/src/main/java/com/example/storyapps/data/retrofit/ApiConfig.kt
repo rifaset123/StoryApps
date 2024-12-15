@@ -1,6 +1,7 @@
 package com.example.storyapps.data.retrofit
 
 import android.util.Log
+import com.example.storyapps.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,7 +24,7 @@ class ApiConfig {
                 .addInterceptor(authInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://story-api.dicoding.dev/v1/")
+                .baseUrl(BuildConfig.DICODING_STORY_API_KEY)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

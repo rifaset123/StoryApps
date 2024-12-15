@@ -1,6 +1,12 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -15,6 +21,26 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        //load the values from .properties file
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+
+        //return empty key in case something goes wrong
+        val dicodingStoryApiKey = properties.getProperty("DICODING_STORY_API_KEY") ?: ""
+        buildConfigField(
+            type = "String",
+            name = "DICODING_STORY_API_KEY",
+            value = dicodingStoryApiKey
+        )
+
+        val mapsApiKey = properties.getProperty("MAPS_API_KEY") ?: ""
+        buildConfigField(
+            type = "String",
+            name = "MAPS_API_KEY",
+            value = "\"$mapsApiKey\""
+        )
     }
 
     buildTypes {
@@ -36,6 +62,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -46,6 +73,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +100,11 @@ dependencies {
 
     // rotasi
     implementation(libs.androidx.exifinterface)
+
+    // room
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.room.compiler)
+
+    // paging3 network
+    implementation(libs.androidx.paging.runtime.ktx)
 }
