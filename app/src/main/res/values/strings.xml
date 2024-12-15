@@ -50,4 +50,10 @@
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="enter_your_password">Enter your Password</string>
+
+    <string name="title_activity_maps">Maps</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>
