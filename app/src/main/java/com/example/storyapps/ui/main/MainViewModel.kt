@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.data.repository.StoryRepository
 import com.example.storyapps.data.repository.UserRepository
@@ -20,6 +22,9 @@ class MainViewModel(private val repository: UserRepository, private val story : 
 
     private val _listStory = MutableLiveData<List<ListStory>?>()
     val listStory: LiveData<List<ListStory>?> = _listStory
+
+    val stories: LiveData<PagingData<ListStory>> =
+        story.getStory().cachedIn(viewModelScope)
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()

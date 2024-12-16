@@ -63,8 +63,15 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
             binding.progressBarMain.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        viewModel.listStory.observe(this) { stories ->
-            adapter.submitList(stories)
+        // loading state
+        binding.rvStories.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+
+        viewModel.stories.observe(this) {
+            adapter.submitData(lifecycle, it)
         }
 
         // logout ketika token dihapus
@@ -78,6 +85,10 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         loadTokens()
 
         setupFab()
+
+    }
+
+    private fun getStoryData(){
 
     }
 

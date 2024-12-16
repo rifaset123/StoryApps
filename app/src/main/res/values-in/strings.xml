@@ -57,4 +57,6 @@
     <string name="satellite_type">Satelit</string>
     <string name="terrain_type">Medan</string>
     <string name="hybrid_type">Gabungan</string>
+
+    <string name="retry">Coba lagi!</string>
 </resources>

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,7 @@ import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ItemCardViewBinding
 import com.example.storyapps.helper.OnEventClickListener
 
-class MainAdapter(private val listener: OnEventClickListener) : ListAdapter<ListStory, MainAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class MainAdapter(private val listener: OnEventClickListener) : PagingDataAdapter<ListStory, MainAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemCardViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,11 +24,15 @@ class MainAdapter(private val listener: OnEventClickListener) : ListAdapter<List
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val news = getItem(position)
-        holder.bind(news)
+        if (news != null) {
+            holder.bind(news)
+        }
 
         // click handler
         holder.itemView.setOnClickListener {
-            listener.onEventClick(news)
+            if (news != null) {
+                listener.onEventClick(news)
+            }
         }
     }
 
