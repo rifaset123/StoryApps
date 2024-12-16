@@ -107,4 +107,7 @@ dependencies {
 
     // paging3 network
     implementation(libs.androidx.paging.runtime.ktx)
+
+    // paging 3 RemoteMediator
+    implementation(libs.androidx.room.paging)
 }

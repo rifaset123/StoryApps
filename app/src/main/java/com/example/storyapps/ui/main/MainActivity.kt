@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         )
 
         viewModel.stories.observe(this) {
+            Log.d("MainActivity", "Stories observed: ${it.toString()}")
             adapter.submitData(lifecycle, it)
         }
 
@@ -85,10 +86,6 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         loadTokens()
 
         setupFab()
-
-    }
-
-    private fun getStoryData(){
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.storyapps.di
 
 import android.content.Context
+import com.example.storyapps.data.local.database.StoryDatabase
 import com.example.storyapps.data.pref.UserPreference
 import com.example.storyapps.data.pref.dataStore
 import com.example.storyapps.data.repository.StoryIDRepository
@@ -23,7 +24,8 @@ object Injection {
         val pref = UserPreference.getInstance(context.dataStore)
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        return StoryRepository.getInstance(apiService, pref)
+        val storyDatabase = StoryDatabase.getDatabase(context)
+        return StoryRepository.getInstance(apiService, pref, storyDatabase)
     }
 
     fun provideRepositoryStoryID(context: Context): StoryIDRepository {
