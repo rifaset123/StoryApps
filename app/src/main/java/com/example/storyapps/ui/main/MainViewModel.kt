@@ -23,6 +23,13 @@ class MainViewModel(private val repository: UserRepository, private val story : 
     private val _listStory = MutableLiveData<List<ListStory>?>()
     val listStory: LiveData<List<ListStory>?> = _listStory
 
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
+
+    private val _infoMessage = MutableLiveData<String?>()
+    val infoMessage: LiveData<String?> = _infoMessage
+
+
     val stories: LiveData<PagingData<ListStory>> =
         story.getStory().cachedIn(viewModelScope)
 
@@ -42,10 +49,17 @@ class MainViewModel(private val repository: UserRepository, private val story : 
 
     suspend fun getStory(token: String) {
         _isLoading.value = true
+        _errorMessage.value = null
+        _infoMessage.value = null
         try {
             val response = ApiConfig.getApiService(token).getStories()
-            _listStory.value = response.listStory?.filterNotNull()
+            val stories = response.listStory?.filterNotNull()
+            if (stories.isNullOrEmpty()) {
+                _infoMessage.value = "No data available"
+            }
+            _listStory.value = stories
         } catch (e: Exception) {
+            _errorMessage.value = e.message
             _listStory.value = null
         } finally {
             _isLoading.value = false

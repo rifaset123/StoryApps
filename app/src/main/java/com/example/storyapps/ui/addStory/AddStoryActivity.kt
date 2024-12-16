@@ -27,6 +27,8 @@ import com.example.storyapps.helper.getImageUri
 import com.example.storyapps.helper.reduceFileImage
 import com.example.storyapps.helper.uriToFile
 import com.example.storyapps.ui.main.MainActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -61,6 +63,37 @@ class AddStoryActivity : AppCompatActivity() {
             REQUIRED_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
 
+    // maps
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var lat: Double? = null
+    private var lon: Double? = null
+
+    private val requestPermissionMapsLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    if (location != null) {
+                        lat = location.latitude
+                        lon = location.longitude
+                    }
+                }
+        } else {
+            requestPermissionMapsLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +117,14 @@ class AddStoryActivity : AppCompatActivity() {
             cameraButton.setOnClickListener { startCamera() }
             uploadButton.setOnClickListener {
                 uploadImage()
+            }
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        binding.switchButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                getMyLocation()
+                Log.d("Location", "location: $lat, $lon")
             }
         }
     }
@@ -111,7 +152,9 @@ class AddStoryActivity : AppCompatActivity() {
                 try {
                     val token = viewModel.getToken()
                     val apiService = ApiConfig.getApiService(token)
-                    val successResponse = apiService.uploadImage(multipartBody, requestBody)
+                    val latRequestBody = lat.toString().toRequestBody("text/plain".toMediaType())
+                    val lonRequestBody = lon.toString().toRequestBody("text/plain".toMediaType())
+                    val successResponse = apiService.uploadImage(multipartBody, requestBody, latRequestBody, lonRequestBody)
                     showToast(successResponse.message)
                     showLoading(false)
                     intent = Intent(this@AddStoryActivity, MainActivity::class.java)

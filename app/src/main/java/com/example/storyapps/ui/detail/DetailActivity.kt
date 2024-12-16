@@ -32,6 +32,8 @@ class DetailActivity : AppCompatActivity() {
             with(binding) {
                 titleTextView.text = it.name
                 descriptionTextView.text = it.description
+                locationTextViewLat.text = it.lat.toString()
+                locationTextViewLon.text = it.lon.toString()
                 Glide.with(this@DetailActivity)
                     .load(it.photoUrl)
                     .placeholder(R.drawable.ng)
