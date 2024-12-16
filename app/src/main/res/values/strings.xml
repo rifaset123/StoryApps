@@ -60,4 +60,6 @@
     <string name="retry">Try again!</string>
     <string name="show_your_upload_location">Show your Upload Location</string>
     <string name="upload_location">Upload Location :</string>
+
+    <string name="upload_success">Upload success!</string>
 </resources>

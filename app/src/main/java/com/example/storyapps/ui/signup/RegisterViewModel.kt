@@ -33,6 +33,25 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
+    fun isPasswordValid(password: String): Boolean {
+        return password.length >= 8
+    }
+
+    fun isNameValid(name: String): Boolean {
+        return name.isNotEmpty()
+    }
+
+    fun isEmailValid(email: String): Boolean {
+        val emailPattern = java.util.regex.Pattern.compile(
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+        )
+        return emailPattern.matcher(email).matches()
+    }
+
+    fun isFormValid(name: String, email: String, password: String): Boolean {
+        return isNameValid(name) && isEmailValid(email) && isPasswordValid(password)
+    }
+
     fun register(name: String, email: String, password: String) {
         _isLoading.value = true
         viewModelScope.launch {

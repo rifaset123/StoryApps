@@ -82,7 +82,7 @@
         tools:alpha="100" />
 
     <com.example.storyapps.ui.customView.EmailEditText
-        android:id="@+id/emailEditTextLayout"
+        android:id="@+id/emailEditTextLayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -103,14 +103,14 @@
         android:text="@string/password"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditTextLayoutLogin"
 
 
         android:alpha="0"
         tools:alpha="100" />
 
     <com.example.storyapps.ui.customView.PasswordEditText
-        android:id="@+id/passwordEditTextLayout"
+        android:id="@+id/passwordEditTextLayoutLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -131,7 +131,7 @@
         android:id="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayoutLogin"
         android:alpha="0"
         tools:alpha="100" />
 

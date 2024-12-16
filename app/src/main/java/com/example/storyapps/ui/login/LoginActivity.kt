@@ -66,9 +66,9 @@ class LoginActivity : AppCompatActivity() {
 
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(200)
         val message = ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(200)
-        val emailBox = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(200)
+        val emailBox = ObjectAnimator.ofFloat(binding.emailEditTextLayoutLogin, View.ALPHA, 1f).setDuration(200)
         val emailText = ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(200)
-        val passwordBox = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(200)
+        val passwordBox = ObjectAnimator.ofFloat(binding.passwordEditTextLayoutLogin, View.ALPHA, 1f).setDuration(200)
         val passwordText = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(200)
         val button = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(200)
 
@@ -94,10 +94,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditTextLayout.text.toString()
-            val password = binding.passwordEditTextLayout.text.toString()
+            val email = binding.emailEditTextLayoutLogin.text.toString()
+            val password = binding.passwordEditTextLayoutLogin.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty() &&
-                binding.passwordEditTextLayout.error == null && binding.passwordEditTextLayout.error == null) {
+                binding.passwordEditTextLayoutLogin.error == null && binding.passwordEditTextLayoutLogin.error == null) {
                 binding.loginButton.isEnabled = false
                 viewModel.login(email, password)
             } else {
@@ -122,21 +122,21 @@ class LoginActivity : AppCompatActivity() {
     private fun verificationLogin(){
         with(binding){
             // format email
-            emailEditTextLayout.afterTextChanged { email ->
+            emailEditTextLayoutLogin.afterTextChanged { email ->
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    binding.emailEditTextLayout.error = getString(R.string.use_correct_email_format)
+                    binding.emailEditTextLayoutLogin.error = getString(R.string.use_correct_email_format)
                 } else {
-                    binding.emailEditTextLayout.error = null
+                    binding.emailEditTextLayoutLogin.error = null
                 }
                 enableSignUpButton()
             }
 
             // minimal 8 karakter
-            passwordEditTextLayout.afterTextChanged { password ->
+            passwordEditTextLayoutLogin.afterTextChanged { password ->
                 if (password.length < 8) {
-                    binding.passwordEditTextLayout.error = getString(R.string.password_must_be_at_least_8_characters)
+                    binding.passwordEditTextLayoutLogin.error = getString(R.string.password_must_be_at_least_8_characters)
                 } else {
-                    binding.passwordEditTextLayout.error = null
+                    binding.passwordEditTextLayoutLogin.error = null
                 }
                 enableSignUpButton()
             }
@@ -144,10 +144,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun enableSignUpButton() {
-        binding.loginButton.isEnabled = binding.emailEditTextLayout.error == null &&
-                binding.passwordEditTextLayout.error == null &&
-                binding.emailEditTextLayout.text?.isNotEmpty() == true &&
-                binding.passwordEditTextLayout.text?.isNotEmpty() == true
+        binding.loginButton.isEnabled = binding.emailEditTextLayoutLogin.error == null &&
+                binding.passwordEditTextLayoutLogin.error == null &&
+                binding.emailEditTextLayoutLogin.text?.isNotEmpty() == true &&
+                binding.passwordEditTextLayoutLogin.text?.isNotEmpty() == true
     }
 
     private fun setupObservers() {

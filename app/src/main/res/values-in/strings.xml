@@ -61,4 +61,6 @@
     <string name="retry">Coba lagi!</string>
     <string name="show_your_upload_location">Perlihatkan lokasi upload anda</string>
     <string name="upload_location">Lokasi Upload: </string>
+
+    <string name="upload_success">Berhasil mengunggah</string>
 </resources>

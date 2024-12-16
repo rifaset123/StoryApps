@@ -22,6 +22,7 @@ import com.example.storyapps.R
 import com.example.storyapps.data.response.FileUploadResponse
 import com.example.storyapps.data.retrofit.ApiConfig
 import com.example.storyapps.databinding.ActivityAddStoryBinding
+import com.example.storyapps.helper.EspressoIdlingResource
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.getImageUri
 import com.example.storyapps.helper.reduceFileImage
@@ -125,6 +126,10 @@ class AddStoryActivity : AppCompatActivity() {
             if (isChecked) {
                 getMyLocation()
                 Log.d("Location", "location: $lat, $lon")
+            } else {
+                lat = null
+                lon = null
+                Log.d("Location", "location: $lat, $lon")
             }
         }
     }
@@ -152,13 +157,13 @@ class AddStoryActivity : AppCompatActivity() {
                 try {
                     val token = viewModel.getToken()
                     val apiService = ApiConfig.getApiService(token)
-                    val latRequestBody = lat.toString().toRequestBody("text/plain".toMediaType())
-                    val lonRequestBody = lon.toString().toRequestBody("text/plain".toMediaType())
+                    val latRequestBody = lat?.toString()?.toRequestBody("text/plain".toMediaType()) ?: null
+                    val lonRequestBody = lon?.toString()?.toRequestBody("text/plain".toMediaType()) ?: null
                     val successResponse = apiService.uploadImage(multipartBody, requestBody, latRequestBody, lonRequestBody)
-                    showToast(successResponse.message)
+                    showToast(getString(R.string.upload_success))
                     showLoading(false)
                     intent = Intent(this@AddStoryActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@AddStoryActivity).toBundle())
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
@@ -173,6 +178,11 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            EspressoIdlingResource.increment()
+        } else {
+            EspressoIdlingResource.decrement()
+        }
     }
 
     private fun showToast(message: String) {

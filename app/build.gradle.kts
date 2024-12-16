@@ -39,7 +39,7 @@ android {
         buildConfigField(
             type = "String",
             name = "MAPS_API_KEY",
-            value = "\"$mapsApiKey\""
+            value = mapsApiKey
         )
     }
 
@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.rules)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -104,6 +106,7 @@ dependencies {
 
     // room
     implementation(libs.androidx.room.ktx)
+    androidTestImplementation(project(":app"))
     ksp(libs.room.compiler)
 
     // paging3 network
@@ -120,4 +123,10 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
+
+    // espresso
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.espresso.idling.resource)
+    implementation ("com.android.support.test.espresso:espresso-idling-resource:3.0.2")
+
 }

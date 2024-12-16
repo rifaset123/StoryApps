@@ -62,7 +62,7 @@ interface ApiService {
     suspend fun uploadImage(
         @Part file: MultipartBody.Part,
         @Part ("description") description: RequestBody,
-        @Part ("lat") lat:RequestBody,
-        @Part ("lon") lon:RequestBody
+        @Part ("lat") lat:RequestBody?,
+        @Part ("lon") lon:RequestBody?
     ) : FileUploadResponse
 }
