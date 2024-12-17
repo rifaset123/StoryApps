@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class LoginActivityTest {
     @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule() // background process dijalankan secara
+    val instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val mainDispatcherRules = MainDispatcherRule()
