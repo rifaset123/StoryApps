@@ -1,5 +1,6 @@
 package com.example.storyapps.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +30,25 @@ class MainViewModel(private val repository: UserRepository, private val story : 
     private val _infoMessage = MutableLiveData<String?>()
     val infoMessage: LiveData<String?> = _infoMessage
 
+    suspend fun getStory(token: String) {
+        _isLoading.value = true
+        _errorMessage.value = null
+        _infoMessage.value = null
+        try {
+            val response = ApiConfig.getApiService(token).getStories()
+            val stories = response.listStory?.filterNotNull()
+            Log.d("MainViewModel", "Stories vm: $stories")
+            if (stories.isNullOrEmpty()) {
+                _infoMessage.value = "No data available"
+            }
+            _listStory.value = stories
+        } catch (e: Exception) {
+            _errorMessage.value = e.message
+            _listStory.value = null
+        } finally {
+            _isLoading.value = false
+        }
+    }
 
     val stories: LiveData<PagingData<ListStory>> =
         story.getStory().cachedIn(viewModelScope)
@@ -44,25 +64,6 @@ class MainViewModel(private val repository: UserRepository, private val story : 
     fun logout() {
         viewModelScope.launch {
             repository.logout()
-        }
-    }
-
-    suspend fun getStory(token: String) {
-        _isLoading.value = true
-        _errorMessage.value = null
-        _infoMessage.value = null
-        try {
-            val response = ApiConfig.getApiService(token).getStories()
-            val stories = response.listStory?.filterNotNull()
-            if (stories.isNullOrEmpty()) {
-                _infoMessage.value = "No data available"
-            }
-            _listStory.value = stories
-        } catch (e: Exception) {
-            _errorMessage.value = e.message
-            _listStory.value = null
-        } finally {
-            _isLoading.value = false
         }
     }
 }

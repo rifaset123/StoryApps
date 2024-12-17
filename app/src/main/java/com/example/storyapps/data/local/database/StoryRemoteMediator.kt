@@ -1,5 +1,6 @@
 package com.example.storyapps.data.local.database
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -52,9 +53,11 @@ private val apiService: ApiService
                 }
                 database.remoteKeysDao().insertAll(keys)
                 database.storyDao().insertQuote(responseData)
+                Log.d("StoryRemoteMediator", "Data successfully fetched and saved to database")
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
+            Log.e("StoryRemoteMediator", "Error fetching data", exception)
             return MediatorResult.Error(exception)
         }
     }
@@ -78,6 +81,7 @@ private val apiService: ApiService
     }
 
     override suspend fun initialize(): InitializeAction {
+        Log.d("StoryRemoteMediator", "initialize called")
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 

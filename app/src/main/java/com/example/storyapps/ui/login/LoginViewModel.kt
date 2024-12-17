@@ -3,6 +3,7 @@ package com.example.storyapps.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.data.repository.UserRepository
@@ -29,7 +30,6 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     fun login(email: String, password: String) {
-        EspressoIdlingResource.increment()
         _isLoading.value = true
         viewModelScope.launch {
             try {
@@ -54,7 +54,6 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 _isLogin.value = false
             } finally {
                 _isLoading.value = false
-                EspressoIdlingResource.decrement()
             }
         }
     }

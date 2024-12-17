@@ -19,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.storyapps.R
 import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ActivityMainBinding
+import com.example.storyapps.helper.MainViewModelFactory
 import com.example.storyapps.helper.OnEventClickListener
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.addStory.AddStoryActivity
 import com.example.storyapps.ui.detail.DetailActivity
 import com.example.storyapps.ui.maps.MapsActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -32,7 +34,7 @@ import java.io.Serializable
 class MainActivity : AppCompatActivity(), OnEventClickListener {
 
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        MainViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityMainBinding
 
@@ -63,17 +65,7 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
             binding.progressBarMain.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // loading state
-        binding.rvStories.adapter = adapter.withLoadStateFooter(
-            footer = LoadingStateAdapter {
-                adapter.retry()
-            }
-        )
-
-        viewModel.stories.observe(this) {
-            Log.d("MainActivity", "Stories observed: ${it.toString()}")
-            adapter.submitData(lifecycle, it)
-        }
+        loadTokens()
 
         // logout ketika token dihapus
         viewModel.getSession().observe(this) { user ->
@@ -82,11 +74,34 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
                 finish()
             }
         }
+//        lifecycleScope.launch {
+//            val token = viewModel.getToken()
+//            if (token != null) {
+//                viewModel.getStory(token)
+//            }
+//        }
 
-        loadTokens()
+//        lifecycleScope.launch {
+//            TokenManager.idToken?.let { viewModel.getStory(it) }
+//        }
+
+        viewModel.listStory.observe(this) {
+            Log.d("MainActivity1", "Storieswww: $it")
+        }
+
+        viewModel.stories.observe(this@MainActivity) {
+            Log.d("MainActivity1", "Stories updated: $it")
+            adapter.submitData(lifecycle, it)
+        }
+
+        // loading state
+        binding.rvStories.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
 
         setupFab()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -118,7 +133,8 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         lifecycleScope.launch {
             val token = viewModel.getToken()
             if (token != null) {
-                viewModel.getStory(token)
+//                viewModel.getStory(token)
+                Log.d("MainActivity", "Token: $token")
             } else {
             }
         }
@@ -134,16 +150,6 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
         binding.fabAddStory.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            val token = viewModel.getToken()
-            if (token != null) {
-                viewModel.getStory(token)
-            }
         }
     }
 }

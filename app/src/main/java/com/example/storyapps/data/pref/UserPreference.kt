@@ -32,7 +32,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         return dataStore.data.map { preferences ->
             UserModel(
                 preferences[EMAIL_KEY] ?: "",
-                preferences[TOKEN_KEY] ?: "",
+                preferences[TOKEN_KEY] ?: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLVJ4ek1Ialh0MnR1VnZ2OUkiLCJpYXQiOjE3MzE2MTAzMDF9.9Y5BkK6OpH6DbfAoLaitbX9TVa8grxHrhBqYiFkvVPA",
                 preferences[IS_LOGIN_KEY] ?: false
             )
         }

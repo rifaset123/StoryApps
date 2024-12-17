@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
-//        ViewModelFactory(Injection.provideRepository(this))
     }
 
     private lateinit var binding: ActivityLoginBinding
@@ -167,11 +166,8 @@ class LoginActivity : AppCompatActivity() {
                         intent.putExtras(Bundle().apply {
                             putString("extra_token", user.token)
                         })
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
-                        finish()
                     }
                     create()
                     show()
