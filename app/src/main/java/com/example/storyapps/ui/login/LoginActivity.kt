@@ -56,7 +56,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun playAnimation() {
-        // gambar yang berjalan ke kanan dan ke kiri secara berulang
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
             repeatCount = ObjectAnimator.INFINITE

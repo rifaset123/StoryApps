@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
-    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,16 +21,6 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
 
     private val _isRegister = MutableLiveData<Boolean>()
     val isRegister: LiveData<Boolean> = _isRegister
-
-
-    private val _logoutStatus = MutableLiveData<Boolean>()
-    val logoutStatus: LiveData<Boolean> = _logoutStatus
-
-    fun saveSession(user: UserModel) {
-        viewModelScope.launch {
-            repository.saveSession(user)
-        }
-    }
 
     fun isPasswordValid(password: String): Boolean {
         return password.length >= 8

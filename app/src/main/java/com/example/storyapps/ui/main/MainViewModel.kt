@@ -1,6 +1,5 @@
 package com.example.storyapps.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,13 +21,10 @@ class MainViewModel(private val repository: UserRepository, private val story : 
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _listStory = MutableLiveData<List<ListStory>?>()
-    val listStory: LiveData<List<ListStory>?> = _listStory
 
     private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> = _errorMessage
 
     private val _infoMessage = MutableLiveData<String?>()
-    val infoMessage: LiveData<String?> = _infoMessage
 
     suspend fun getStory(token: String) {
         _isLoading.value = true
@@ -37,7 +33,6 @@ class MainViewModel(private val repository: UserRepository, private val story : 
         try {
             val response = ApiConfig.getApiService(token).getStories()
             val stories = response.listStory?.filterNotNull()
-            Log.d("MainViewModel", "Stories vm: $stories")
             if (stories.isNullOrEmpty()) {
                 _infoMessage.value = "No data available"
             }

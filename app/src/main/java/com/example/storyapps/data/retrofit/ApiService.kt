@@ -19,9 +19,6 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-//    @GET("events?active=1")
-//    fun getEvents(): Call<EventResponse>
-
     // register
     @FormUrlEncoded
     @POST("register")

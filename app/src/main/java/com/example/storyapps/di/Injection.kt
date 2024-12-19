@@ -1,8 +1,6 @@
 package com.example.storyapps.di
 
 import android.content.Context
-import android.util.Log
-import androidx.paging.LOG_TAG
 import com.example.storyapps.data.local.database.StoryDatabase
 import com.example.storyapps.data.pref.UserPreference
 import com.example.storyapps.data.pref.dataStore
@@ -25,7 +23,6 @@ object Injection {
         val pref = UserPreference.getInstance(context.dataStore)
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token)
-        Log.d("StoryRemoteMediator", "provideRepositoryStory: ${user.token}")
         val storyDatabase = StoryDatabase.getDatabase(context)
         return StoryRepository.getInstance(apiService, pref, storyDatabase)
     }

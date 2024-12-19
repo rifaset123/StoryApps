@@ -19,25 +19,20 @@ class NameEditText @JvmOverloads constructor(
 ) : AppCompatEditText(context, attrs), View.OnTouchListener {
     private var clearButtonImage: Drawable
     private val startIconImage = ContextCompat.getDrawable(context, R.drawable.ic_baseline_person_24) as Drawable
-    private val customMarginStart = resources.getDimensionPixelSize(R.dimen.margin_start)
 
-    // menentukan kondisi awal dari custom view yang dibuat dan menambahkan listener untuk menangani aksi tertentu
     init {
         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_close_black_24) as Drawable
         setButtonDrawables(startOfTheText = startIconImage)
 
         setOnTouchListener(this)
 
-        // kode untuk menampilkan clear button ketika ada perubahan teks
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // Do nothing.
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
             }
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
             }
         })
     }
@@ -66,7 +61,7 @@ class NameEditText @JvmOverloads constructor(
         endOfTheText:Drawable? = null,
         bottomOfTheText: Drawable? = null
     ){
-        // menampilkan gambar pada EditText dengan parameter sebagai berikut (left, top, right, bottom)
+        // menampilkan gambar pada EditText
         setCompoundDrawablesWithIntrinsicBounds(
             startOfTheText,
             topOfTheText,
@@ -75,15 +70,13 @@ class NameEditText @JvmOverloads constructor(
         )
     }
 
-    // menentukan behaviour dari komponen Custom View ketika komponen ditekan
     override fun onTouch(v: View?, event: MotionEvent): Boolean {
         if (compoundDrawables[2] != null) {
             val clearButtonStart: Float
             val clearButtonEnd: Float
             var isClearButtonClicked = false
 
-            //  pengecekan apakah area yang ditekan adalah area tempat tombol silang berada
-            if (layoutDirection == View.LAYOUT_DIRECTION_RTL) { // pengecekan jenis handphone apakah menggunakan format RTL (Right-to-left)
+            if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
                 clearButtonEnd = (clearButtonImage.intrinsicWidth + paddingStart).toFloat()
                 when {
                     event.x < clearButtonEnd -> isClearButtonClicked = true
@@ -97,12 +90,12 @@ class NameEditText @JvmOverloads constructor(
 
             if (isClearButtonClicked) {
                 when (event.action) {
-                    MotionEvent.ACTION_DOWN -> { // action_down = ketika tombol ditekan
+                    MotionEvent.ACTION_DOWN -> {
                         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_close_black_24) as Drawable
                         showClearButton()
                         return true
                     }
-                    MotionEvent.ACTION_UP -> { // ketika tombol dilepas setelah ditekan
+                    MotionEvent.ACTION_UP -> {
                         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_close_black_24) as Drawable
                         when {
                             text != null -> text?.clear()

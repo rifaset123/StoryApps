@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -125,11 +124,9 @@ class AddStoryActivity : AppCompatActivity() {
         binding.switchButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getMyLocation()
-                Log.d("Location", "location: $lat, $lon")
             } else {
                 lat = null
                 lon = null
-                Log.d("Location", "location: $lat, $lon")
             }
         }
     }
@@ -138,7 +135,6 @@ class AddStoryActivity : AppCompatActivity() {
     private fun uploadImage() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
-            Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.TextAreaDescription.text.toString()
 
             showLoading(true)

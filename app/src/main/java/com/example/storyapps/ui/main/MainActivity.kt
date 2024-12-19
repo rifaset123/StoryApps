@@ -3,7 +3,6 @@ package com.example.storyapps.ui.main
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,12 +20,10 @@ import com.example.storyapps.data.response.ListStory
 import com.example.storyapps.databinding.ActivityMainBinding
 import com.example.storyapps.helper.MainViewModelFactory
 import com.example.storyapps.helper.OnEventClickListener
-import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.addStory.AddStoryActivity
 import com.example.storyapps.ui.detail.DetailActivity
 import com.example.storyapps.ui.maps.MapsActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
@@ -74,23 +71,8 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
                 finish()
             }
         }
-//        lifecycleScope.launch {
-//            val token = viewModel.getToken()
-//            if (token != null) {
-//                viewModel.getStory(token)
-//            }
-//        }
-
-//        lifecycleScope.launch {
-//            TokenManager.idToken?.let { viewModel.getStory(it) }
-//        }
-
-        viewModel.listStory.observe(this) {
-            Log.d("MainActivity1", "Storieswww: $it")
-        }
 
         viewModel.stories.observe(this@MainActivity) {
-            Log.d("MainActivity1", "Stories updated: $it")
             adapter.submitData(lifecycle, it)
         }
 
@@ -132,11 +114,6 @@ class MainActivity : AppCompatActivity(), OnEventClickListener {
     private fun loadTokens() {
         lifecycleScope.launch {
             val token = viewModel.getToken()
-            if (token != null) {
-//                viewModel.getStory(token)
-                Log.d("MainActivity", "Token: $token")
-            } else {
-            }
         }
     }
 

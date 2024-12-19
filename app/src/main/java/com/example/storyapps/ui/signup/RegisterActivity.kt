@@ -2,8 +2,6 @@ package com.example.storyapps.ui.signup
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,16 +12,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storyapps.R
-import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.databinding.ActivityRegisterBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.helper.afterTextChanged
-import com.example.storyapps.ui.customView.ButtonEdit
-import com.example.storyapps.ui.customView.EmailEditText
-import com.example.storyapps.ui.customView.NameEditText
-import com.example.storyapps.ui.customView.PasswordEditText
-import com.example.storyapps.ui.login.LoginActivity
-import com.example.storyapps.ui.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding

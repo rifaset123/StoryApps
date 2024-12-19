@@ -3,11 +3,9 @@ package com.example.storyapps.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.data.repository.UserRepository
-import com.example.storyapps.helper.EspressoIdlingResource
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {

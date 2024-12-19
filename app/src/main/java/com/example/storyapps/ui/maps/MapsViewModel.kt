@@ -1,6 +1,5 @@
 package com.example.storyapps.ui.maps
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,14 +19,12 @@ class MapsViewModel (private val repository: UserRepository, private val story :
 
     suspend fun getToken(): String {
         return repository.getSession().map { it.token }.first()
-        Log.d("MapsViewModel", "getToken: ${repository.getSession().map { it.token }.first()}")
     }
     suspend fun getStoryWithLocation(token: String) {
         _isLoading.value = true
         try {
             val response = ApiConfig.getApiService(token).getStoriesWithLocation()
             _listStory.value = response.listStory?.filterNotNull()
-            Log.d("MapsViewModel", "getStory: ${response.listStory}")
         } catch (e: Exception) {
             _listStory.value = null
         } finally {

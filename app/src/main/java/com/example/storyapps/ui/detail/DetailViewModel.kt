@@ -1,6 +1,5 @@
 package com.example.storyapps.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,7 +37,6 @@ class DetailViewModel(private val repository: StoryIDRepository) : ViewModel() {
                         }
                     } else {
                         response.errorBody()?.let {
-//                            Log.e("DetailViewModel", it.string())
                         }
                     }
                 }

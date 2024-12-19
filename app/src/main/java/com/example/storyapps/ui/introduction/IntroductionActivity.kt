@@ -6,7 +6,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.storyapps.databinding.ActivityIntroductionBinding
-import com.example.storyapps.ui.main.MainActivity
 import com.example.storyapps.ui.welcome.WelcomeActivity
 
 class IntroductionActivity : AppCompatActivity() {

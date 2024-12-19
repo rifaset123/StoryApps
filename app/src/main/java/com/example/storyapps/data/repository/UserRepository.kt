@@ -1,13 +1,11 @@
 package com.example.storyapps.data.repository
 
-import android.util.Log
 import com.example.storyapps.data.pref.UserModel
 import com.example.storyapps.data.pref.UserPreference
 import com.example.storyapps.data.response.LoginResponse
 import com.example.storyapps.data.response.RegisterResponse
 import com.example.storyapps.data.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class UserRepository private constructor(
     private val userPreference: UserPreference,

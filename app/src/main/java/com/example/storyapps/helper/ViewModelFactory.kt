@@ -10,7 +10,6 @@ import com.example.storyapps.di.Injection
 import com.example.storyapps.ui.addStory.AddStoryViewModel
 import com.example.storyapps.ui.detail.DetailViewModel
 import com.example.storyapps.ui.login.LoginViewModel
-import com.example.storyapps.ui.main.MainViewModel
 import com.example.storyapps.ui.maps.MapsViewModel
 import com.example.storyapps.ui.signup.RegisterViewModel
 import com.example.storyapps.ui.welcome.WelcomeViewModel

@@ -19,7 +19,6 @@ import com.example.storyapps.R
 import com.example.storyapps.databinding.ActivityWelcomeBinding
 import com.example.storyapps.helper.ViewModelFactory
 import com.example.storyapps.ui.login.LoginActivity
-import com.example.storyapps.ui.login.LoginViewModel
 import com.example.storyapps.ui.main.MainActivity
 import com.example.storyapps.ui.signup.RegisterActivity
 
